@@ -11,15 +11,13 @@
         html.innerHTML = response
         return html
     }
-
     const html = await getScripts()
     const scripts = html.querySelectorAll(o)
     const links = html.querySelectorAll(u)
     scripts.forEach(script => {
         const newScript = l.createElement(o)
         if (script.src) {
-            newScript.src = `${d}${script.src.split(c.location.href)[1]}`
-            console.log(script.src.split(c.location.href))
+            newScript.src = `${d}/${script.src.split(c.location.origin)[1]}`
         }
         if (script.text) {
             newScript.text = script.text
@@ -32,5 +30,4 @@
         newLink.rel = "stylesheet"
         head.appendChild(newLink)
     })
-
 })(window, document, "script", "link", "https://autoheimdall.fr4nca.tech/")
