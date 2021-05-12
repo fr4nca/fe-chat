@@ -28,10 +28,8 @@
     })
     links.forEach(link => {
         const newLink = l.createElement(u)
-        if (link.href) {
-            newLink.href = `${d}${link.href.split(c.location.href)[1]}`
-            console.log(newLink.href)
-        }
+        newLink.href = `${d}${link.href.split(c.location.href)[1]}`
+        newLink.rel = "stylesheet"
         head.appendChild(newLink)
     })
 
