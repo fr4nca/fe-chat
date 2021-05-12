@@ -21,4 +21,4 @@
         }
         body.appendChild(newScript)
     })
-})(window, document, "script", "http://localhost:5501/")
+})(window, document, "script", "https://autoheimdall.fr4nca.tech/")
