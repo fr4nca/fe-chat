@@ -1,12 +1,49 @@
-.form {
-    div {
-        width: 335px;
-        height: 70px;
+.chat {
+    min-height: 500px;
+    
+    header {
+        padding: 8px 15px;
+        display: flex;
+        align-items: center;
+
+        font: normal normal bold 14px/17px Lato;
+        color: #64728C;
+        border-bottom: 1px solid #E8EAEF;
+        
+        svg {
+            margin-right: 14px;
+            border: 1px solid #2253F5;
+            color: #2253F5;
+            border-radius: 5px;
+            padding: 10px;
+            cursor: pointer;
+        }
     }
 
-    padding: 10px 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        padding: 16px 6px;
+
+        svg {
+            color: #CFD3DE;
+            cursor: pointer;
+        }
+
+        textarea {
+            min-width: 290px;
+            max-width: 290px;
+        }
+
+        button {
+            svg {
+                color: white;
+            }
+            width: 40px;
+            height: 40px;
+            padding: 0;
+        }
+    }
 }
