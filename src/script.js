@@ -2,18 +2,23 @@
     const div = l.createElement('div')
     div.id = "cloudez-chat";
     const body = l.querySelector("body")
+    const head = l.querySelector("head")
     body.insertBefore(div, body?.firstChild)
     const getScripts = async () => {
-        const data = await fetch(u)
+        const data = await fetch(d)
         const response = await data.text()
         const html = l.createElement('html')
         html.innerHTML = response
-        return html.querySelectorAll(o)
+        return html
     }
-    (await getScripts()).forEach(script => {
+
+    const html = await getScripts()
+    const scripts = html.querySelectorAll(o)
+    const links = html.querySelectorAll(u)
+    scripts.forEach(script => {
         const newScript = l.createElement(o)
         if (script.src) {
-            newScript.src = `${u}${script.src.split(c.location.href)[1]}`
+            newScript.src = `${d}${script.src.split(c.location.href)[1]}`
             console.log(script.src.split(c.location.href))
         }
         if (script.text) {
@@ -21,4 +26,13 @@
         }
         body.appendChild(newScript)
     })
-})(window, document, "script", "https://autoheimdall.fr4nca.tech/")
+    links.forEach(link => {
+        const newLink = l.createElement(u)
+        if (link.href) {
+            newLink.href = `${d}${link.href.split(c.location.href)[1]}`
+            console.log(newLink.href)
+        }
+        head.appendChild(newLink)
+    })
+
+})(window, document, "script", "link", "https://autoheimdall.fr4nca.tech/")
