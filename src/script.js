@@ -30,4 +30,6 @@
         newLink.rel = "stylesheet"
         head.appendChild(newLink)
     })
+    const script = document.querySelector("#chat-cloudez")
+    script.remove()
 })(window, document, "script", "link", "https://chat.cloudez.io")
