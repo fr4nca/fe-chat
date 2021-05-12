@@ -30,4 +30,4 @@
         newLink.rel = "stylesheet"
         head.appendChild(newLink)
     })
-})(window, document, "script", "link", "https://autoheimdall.fr4nca.tech")
+})(window, document, "script", "link", "https://chat.cloudez.io")
