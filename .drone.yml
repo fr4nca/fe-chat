@@ -38,5 +38,5 @@ steps:
         {{/success}}
     when:
       branch:
-        - master
+        - main
       status: [success, failure]
