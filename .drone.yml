@@ -1,95 +1,11 @@
 kind: pipeline
-name: build docker
+name: deploy main
 trigger:
-  ref:
-    - refs/heads/master
-
-steps:
-  - name: docker
-    image: plugins/docker
-    settings:
-      repo: registry.cloudez.io/cloudez-app
-      registry: registry.cloudez.io
-      auto_tag: true
-      username:
-        from_secret: REGISTRY_USERNAME
-      password:
-        from_secret: REGISTRY_PASSWORD
-
-  - name: chats alert
-    image: peloton/drone-google-chat
-    settings:
-      webhook: https://chat.googleapis.com/v1/spaces/AAAAwveY2ZM
-      key: AIzaSyDdI0hCZtE6vySjMm-WEfRq3CPzqKqqsHI
-      token: SCR71sc-yLpa-WkC9Mph0t01rzEyjhOKadZJuTUc4yw%3D
-      link_names: true
-      template: >
-        {{#success build.status}}
-          {{ repo.name }} build #{{build.number}} done with {{ since build.started }}. Rolling out deployment restart.
-        {{else}}
-          <users/all> {{ repo.name }} build #{{build.number}} failed.
-        {{/success}}
-    when:
-      branch:
-        - master
-      status: [success, failure]
-
----
-kind: pipeline
-type: ssh
-name: prod deploy
-trigger:
-  ref:
-    - refs/heads/master
-server:
-  host: nozel.cloudez.io
-  user: ci
-  port: 22122
-  ssh_key:
-    from_secret: KEY
-
-steps:
-  - name: rollout kubectl
-    environment:
-      KUBECONFIG:
-        from_secret: KUBECTL
-      AUTH_CHAMELEON:
-        from_secret: AUTH_CHAMELEON
-    commands:
-      # - kubectl apply -f https://$AUTH_CHAMELEON@chameleon.cloudez.io/v1/ingress/
-      - kubectl rollout restart deployment cloudez-app-service
-      - kubectl rollout status -w deployment cloudez-app-service
-
-  - name: chats alert
-    image: peloton/drone-google-chat
-    settings:
-      webhook: https://chat.googleapis.com/v1/spaces/AAAAwveY2ZM
-      key: AIzaSyDdI0hCZtE6vySjMm-WEfRq3CPzqKqqsHI
-      token: SCR71sc-yLpa-WkC9Mph0t01rzEyjhOKadZJuTUc4yw%3D
-      link_names: true
-      template: >
-        {{#success build.status}}
-          {{ repo.name }} deploy {{build.number}} on beta.cloudez.io done with {{ since build.started }}.
-        {{else}}
-          <users/all> {{ repo.name }} deploy {{build.number}} on beta.cloudez.io failed.
-        {{/success}}
-    when:
-      branch:
-        - master
-      status: [success, failure]
-
-depends_on:
-  - build docker
-
----
-kind: pipeline
-name: deploy develop
-trigger:
-  branch: [develop]
+  branch: [main]
   event: [push]
 
 steps:
-  - name: deploy develop
+  - name: deploy main
     image: python:3.6
     environment:
       SSH_KEY:
@@ -99,10 +15,10 @@ steps:
       - mkdir -p $HOME/.ssh/
       - echo "$SSH_KEY" > $HOME/.ssh/id_rsa
       - chmod 600 $HOME/.ssh/id_rsa
-      - fab development deploy
+      - fab production deploy
     when:
       branch:
-        - develop
+        - main
       event:
         exclude:
           - pull_request
@@ -116,9 +32,9 @@ steps:
       link_names: true
       template: >
         {{#success build.status}}
-          {{ repo.name }} deploy #{{build.number}} on beta-dev.cloudez.io done with {{ since build.started }}.
+          {{ repo.name }} deploy #{{build.number}} on chat.cloudez.io done with {{ since build.started }}.
         {{else}}
-          <users/all> {{ repo.name }} deploy #{{build.number}} on beta-dev.cloudez.io failed.
+          <users/all> {{ repo.name }} deploy #{{build.number}} on chat.cloudez.io failed.
         {{/success}}
     when:
       branch:
