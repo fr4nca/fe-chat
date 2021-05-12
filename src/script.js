@@ -17,7 +17,7 @@
     scripts.forEach(script => {
         const newScript = l.createElement(o)
         if (script.src) {
-            newScript.src = `${d}/${script.src.split(c.location.origin)[1]}`
+            newScript.src = `${d}${script.src.split(c.location.origin)[1]}`
         }
         if (script.text) {
             newScript.text = script.text
@@ -30,4 +30,4 @@
         newLink.rel = "stylesheet"
         head.appendChild(newLink)
     })
-})(window, document, "script", "link", "https://autoheimdall.fr4nca.tech/")
+})(window, document, "script", "link", "https://autoheimdall.fr4nca.tech")
