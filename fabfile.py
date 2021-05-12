@@ -4,7 +4,7 @@ from fabric.connection import Connection
 
 
 @task
-def development(c):
+def production(c):
     c.config["hosts"] = ["chat@kiora.cloudez.io:22122"]
     c.config["user"] = "chat"
     c.config["app_name"] = "chat.cloudez.io"
