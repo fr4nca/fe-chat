@@ -28,6 +28,7 @@
         "start": "react-scripts start",
         "minify": "terser -m reserved=['c','l','o','u','d','e','z'] src/script.js > public/script.min.js",
         "build": "yarn minify && react-scripts build",
+        "serve": "serve -C -s build",
         "test": "react-scripts test",
         "eject": "react-scripts eject"
     },
