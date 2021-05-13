@@ -20,10 +20,6 @@ const Chat: React.FC<IChatProps> = ({ user, company, chat, addMessage }) => {
     const textRef = useRef<HTMLTextAreaElement>(null);
     const [messages, setMessages] = useState<Array<any>>([]);
 
-    const sendMessage = useCallback(() => {
-        addMessage(textRef);
-    }, [textRef]);
-
     const socket = useMemo(() => {
         const socket = socketIOClient("http://localhost:3333/chat", {
             query: {
@@ -36,6 +32,16 @@ const Chat: React.FC<IChatProps> = ({ user, company, chat, addMessage }) => {
 
         return socket;
     }, [chat, user]);
+
+    const sendMessage = useCallback(() => {
+        addMessage(textRef);
+
+        socket?.emit("typing", {
+            user: user?.uuid,
+            user_name: user?.username,
+            typing: false,
+        });
+    }, [textRef, user, socket]);
 
     useEffect(() => {
         setMessages(chat.messages || []);

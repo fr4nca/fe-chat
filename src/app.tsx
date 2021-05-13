@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable consistent-return */
-import { useState, useEffect, useCallback, useMemo, useRef } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import md5 from "md5";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown, faCommentAlt } from "@fortawesome/free-solid-svg-icons";
@@ -59,10 +59,8 @@ const App: React.FC = () => {
             if (messageLoading) return;
             setMessageLoading(true);
 
-            console.log(textRef);
             if (selectedChat && user)
                 try {
-                    console.log("oi");
                     const messagePayload = new FormData();
 
                     messagePayload.append("chat_id", selectedChat?.id);
@@ -88,11 +86,6 @@ const App: React.FC = () => {
 
                     textRef.current.value = "";
                     setMessageLoading(false);
-                    // socket?.emit("typing", {
-                    //     user: user.uuid,
-                    //     user_name: user.full_name,
-                    //     typing: false,
-                    // });
                 } catch (e) {
                     setMessageLoading(false);
                     console.log(e);
@@ -104,7 +97,6 @@ const App: React.FC = () => {
     const onSubmitExternal = useCallback(
         async e => {
             e.preventDefault();
-
             const name = e.target.elements.name.value;
             const email = e.target.elements.email.value;
             const uuid = uuidv4();
