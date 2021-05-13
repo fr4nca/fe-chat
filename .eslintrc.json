@@ -27,6 +27,7 @@
         "prettier/prettier": "error",
         "camelcase": "off",
         "import/no-unresolved": "error",
+        "consistent-return": "off",
         "@typescript-eslint/naming-convention": [
             "error",
             {

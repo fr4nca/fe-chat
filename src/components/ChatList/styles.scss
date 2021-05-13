@@ -1,0 +1,42 @@
+div.div {
+
+  button {
+    margin: 20px auto;
+    display: block;
+  }
+  
+  .table {
+    width: 100%;
+    margin-top: 20px;
+    border-collapse: collapse;
+    
+    tr {
+      &:hover {
+        background: rgba(245, 248, 255, 1);
+      }
+
+      th {
+        text-align: left;
+        font: normal normal 900 13px Lato;
+        color: rgba(162, 169, 191, 1);
+        text-transform: uppercase;
+        padding: 12px;
+      }
+
+      td {
+        padding: 12px;
+        text-align: left;
+        font: normal normal normal 13px Lato;
+        color: rgba(100, 114, 140, 1);
+        border-top: 1px solid rgba(232, 234, 239, 1);
+        border-bottom: 1px solid rgba(232, 234, 239, 1);
+
+        svg {
+          color: rgba(34, 83, 245, 1);
+          font-size: 20px;
+          margin-right: 12px;
+        }
+      }
+    }
+  }
+}
