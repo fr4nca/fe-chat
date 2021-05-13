@@ -37,7 +37,7 @@ const Chat: React.FC<IChatProps> = ({
   const [typingUsers, setTypingUsers] = useState<Array<any>>([]);
 
   const socket = useMemo(() => {
-    const socket = socketIOClient("http://localhost:3333/chat", {
+    const socket = socketIOClient(`${process.env.REACT_APP_DEADPOOL_URL}chat`, {
       query: {
         chat: id,
       },
