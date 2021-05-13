@@ -46,7 +46,8 @@ const Chat: React.FC<IChatProps> = ({
       },
     });
 
-    socket.on("message", msg => {
+    socket?.on("message", msg => {
+      console.log(msg);
       setMessages(data => [...(data as Array<any>), msg.message]);
     });
 
