@@ -130,7 +130,6 @@ const App: React.FC = () => {
       return `https://www.gravatar.com/avatar/${hash}?d=mp`;
     }
   }, [selectedChat]);
-
   const render = useMemo(() => {
     if (selectedChat) {
       return (
