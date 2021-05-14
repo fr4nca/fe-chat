@@ -9,12 +9,14 @@ interface IChatListProps {
   user?: IUser;
   setSelectedChat(e: any): void;
   setCreateChat(e: any): void;
+  notifications?: any[];
 }
 
 const ChatList: React.FC<IChatListProps> = ({
   user,
   setSelectedChat,
   setCreateChat,
+  notifications,
 }) => {
   const [chats, setChats] = useState<any>();
 
@@ -54,6 +56,15 @@ const ChatList: React.FC<IChatListProps> = ({
     }
   }, []);
 
+  const hasNot = useCallback(
+    chat => {
+      return notifications?.find(
+        not => not.chat_id === chat && not.status === 0,
+      );
+    },
+    [notifications],
+  );
+
   return (
     <div className="div">
       <table className="table">
@@ -66,13 +77,16 @@ const ChatList: React.FC<IChatListProps> = ({
 
         <tbody>
           {chats?.map((chat: any) => (
-            <tr onClick={() => setSelectedChat(chat)}>
-              <td>
-                <FontAwesomeIcon icon={faCommentAlt} />
-                {chat.summary}
-              </td>
-              <td>{ticketArea(chat.team)}</td>
-            </tr>
+            <>
+              <tr onClick={() => setSelectedChat(chat)}>
+                <td>
+                  {hasNot(chat.id) && <span className="notification" />}
+                  <FontAwesomeIcon icon={faCommentAlt} />
+                  {chat.summary}
+                </td>
+                <td className="area">{ticketArea(chat.team)}</td>
+              </tr>
+            </>
           ))}
         </tbody>
       </table>

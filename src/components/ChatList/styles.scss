@@ -9,6 +9,17 @@ div.div {
     width: 100%;
     margin-top: 20px;
     border-collapse: collapse;
+
+    span.notification {
+      position: absolute;
+      height: 7px;
+      width: 7px;
+
+      background: red;
+      top: 20%;
+      left: 28px;
+      border-radius: 50%;
+    }
     
     tbody tr {
       cursor: pointer;
@@ -28,12 +39,17 @@ div.div {
       }
 
       td {
+        position: relative;
         padding: 12px;
         text-align: left;
         font: normal normal normal 13px Lato;
         color: rgba(100, 114, 140, 1);
         border-top: 1px solid rgba(232, 234, 239, 1);
         border-bottom: 1px solid rgba(232, 234, 239, 1);
+
+        &.area {
+          color: #2253F5;
+        }
 
         svg {
           color: rgba(34, 83, 245, 1);

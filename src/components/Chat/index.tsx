@@ -19,6 +19,7 @@ interface IChatProps {
   isExternal?: boolean;
   setSelectedChat(e: any): void;
   setCreateChat(e: any): void;
+  notifications?: any[];
 }
 
 const Chat: React.FC<IChatProps> = ({
@@ -27,6 +28,7 @@ const Chat: React.FC<IChatProps> = ({
   isExternal,
   setSelectedChat,
   setCreateChat,
+  notifications,
 }) => {
   const textRef = useRef<HTMLTextAreaElement>(null);
   const fileInput = useRef<HTMLInputElement>(null);

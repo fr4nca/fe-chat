@@ -142,6 +142,7 @@ const App: React.FC = () => {
           chat={selectedChat}
           setSelectedChat={setSelectedChat}
           isExternal={isExternal}
+          notifications={notifications}
         />
       );
     }
@@ -162,6 +163,7 @@ const App: React.FC = () => {
           user={user}
           setSelectedChat={setSelectedChat}
           setCreateChat={setCreateChat}
+          notifications={notifications}
         />
       );
     }
@@ -173,6 +175,7 @@ const App: React.FC = () => {
     company,
     onSubmitExternal,
     onSubmitInternal,
+    notifications,
   ]);
 
   const socket = useMemo(() => {
@@ -199,6 +202,10 @@ const App: React.FC = () => {
     return null;
   }, [user]);
 
+  const hasNot = useMemo(() => {
+    return notifications.find(not => not.status === 0);
+  }, [notifications]);
+
   return (
     <div className={`app ${isOpen ? "open" : "close"}`}>
       {isOpen ? (
@@ -223,7 +230,10 @@ const App: React.FC = () => {
           {render}
         </>
       ) : (
-        <FontAwesomeIcon icon={faCommentAlt} onClick={toggleOpen} />
+        <>
+          {hasNot && <span className="notification" />}
+          <FontAwesomeIcon icon={faCommentAlt} onClick={toggleOpen} />
+        </>
       )}
     </div>
   );
