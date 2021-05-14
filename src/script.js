@@ -47,4 +47,5 @@
   });
   const script = l.querySelector("#chat-cloudez");
   script.remove();
+  // })(window, document, "script", "link", "http://localhost:5000");
 })(window, document, "script", "link", "https://chat.cloudez.io");

@@ -44,10 +44,10 @@ const Chat: React.FC<IChatProps> = ({
       auth: {
         token: user?.uuid,
       },
+      forceNew: true,
     });
 
     socket?.on("message", msg => {
-      console.log(msg);
       setMessages(data => [...(data as Array<any>), msg.message]);
     });
 
@@ -76,10 +76,6 @@ const Chat: React.FC<IChatProps> = ({
     };
 
     _getChat();
-
-    return () => {
-      socket.close();
-    };
   }, [id, socket]);
 
   const sendMessage = useCallback(async () => {

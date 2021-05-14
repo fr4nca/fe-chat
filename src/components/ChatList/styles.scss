@@ -10,11 +10,15 @@ div.div {
     margin-top: 20px;
     border-collapse: collapse;
     
-    tr {
+    tbody tr {
+      cursor: pointer;
+
       &:hover {
         background: rgba(245, 248, 255, 1);
       }
+    }
 
+    tr {
       th {
         text-align: left;
         font: normal normal 900 13px Lato;

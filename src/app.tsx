@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown, faCommentAlt } from "@fortawesome/free-solid-svg-icons";
 import "./app.scss";
 import { v4 as uuidv4 } from "uuid";
+import socketIOClient from "socket.io-client";
 import CreateChat from "./components/CreateChat";
 import Chat from "./components/Chat";
 import { IUser } from "./types/types";
@@ -16,6 +17,7 @@ const App: React.FC = () => {
   const [company, setCompany] = useState<string | undefined>(undefined);
   const [isExternal, setIsExternal] = useState<boolean | undefined>(undefined);
   const [selectedChat, setSelectedChat] = useState<any>(null);
+  const [notifications, setNotifications] = useState<Array<any>>([]);
   const [createChat, setCreateChat] = useState<boolean>();
   // {
   //     id: "9a0a38c3-8c2c-46f9-b361-14253bf35cc4",
@@ -130,6 +132,7 @@ const App: React.FC = () => {
       return `https://www.gravatar.com/avatar/${hash}?d=mp`;
     }
   }, [selectedChat]);
+
   const render = useMemo(() => {
     if (selectedChat) {
       return (
@@ -171,6 +174,30 @@ const App: React.FC = () => {
     onSubmitExternal,
     onSubmitInternal,
   ]);
+
+  const socket = useMemo(() => {
+    if (user) {
+      const socket = socketIOClient(
+        `${process.env.REACT_APP_DEADPOOL_URL}notification`,
+        {
+          query: {
+            uuid: user.uuid,
+          },
+          auth: {
+            token: "oi",
+          },
+        },
+      );
+
+      socket?.on("new message", data => {
+        setNotifications(nots => [...(nots as Array<any>), data]);
+      });
+
+      return socket;
+    }
+
+    return null;
+  }, [user]);
 
   return (
     <div className={`app ${isOpen ? "open" : "close"}`}>
