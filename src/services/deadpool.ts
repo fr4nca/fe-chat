@@ -55,3 +55,7 @@ export const closeChatService = async (
 export const readNotificationService = async (id: string): Promise<any> => {
   return api.post(`/notification/${id}/read`);
 };
+
+export const getNotificationsService = async (): Promise<any> => {
+  return api.get("/notification");
+};

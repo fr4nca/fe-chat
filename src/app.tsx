@@ -1,4 +1,6 @@
-import { useState, useEffect, useCallback, useMemo } from "react";
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
+/* eslint-disable react/jsx-props-no-spreading */
+import { useState, useEffect, useCallback, useMemo, useContext } from "react";
 import md5 from "md5";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown, faCommentAlt } from "@fortawesome/free-solid-svg-icons";
@@ -8,17 +10,17 @@ import socketIOClient from "socket.io-client";
 import CreateChat from "./components/CreateChat";
 import Chat from "./components/Chat";
 import { IUser } from "./types/types";
-import { createChatService, getChatsService } from "./services/deadpool";
+import { createChatService } from "./services/deadpool";
 import ChatList from "./components/ChatList";
+import { ChatProvider } from "./context/chat";
+import { useChat } from "./hooks/chat";
 
 const App: React.FC = () => {
+  const { company, isExternal, createChat, user, setKeyData } = useChat();
+
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [user, setUser] = useState<IUser | undefined>(undefined);
-  const [company, setCompany] = useState<string | undefined>(undefined);
-  const [isExternal, setIsExternal] = useState<boolean | undefined>(undefined);
   const [selectedChat, setSelectedChat] = useState<any>(null);
   const [notifications, setNotifications] = useState<Array<any>>([]);
-  const [createChat, setCreateChat] = useState<boolean>();
   // {
   //     id: "9a0a38c3-8c2c-46f9-b361-14253bf35cc4",
   //     summary: "Novo chat",
@@ -51,7 +53,7 @@ const App: React.FC = () => {
         team: 0,
       });
 
-      setUser({
+      setKeyData("user", {
         email,
         username: name,
         uuid,
@@ -59,7 +61,7 @@ const App: React.FC = () => {
       });
 
       setSelectedChat(data);
-      setCreateChat(false);
+      setKeyData("createChat", false);
     },
     [company],
   );
@@ -95,34 +97,10 @@ const App: React.FC = () => {
       const { data } = await createChatService(payload);
 
       setSelectedChat(data);
-      setCreateChat(false);
+      setKeyData("createChat", false);
     },
     [user, company],
   );
-
-  useEffect(() => {
-    const script = document.querySelector("#user_data");
-
-    const username = script?.getAttribute("username");
-    const email = script?.getAttribute("email");
-    const uuid = script?.getAttribute("uuid");
-    const is_partner = script?.getAttribute("is_partner") === "true";
-    const is_external = script?.getAttribute("is_external") === "true";
-    const _company = script?.getAttribute("company");
-
-    if (_company) setCompany(_company);
-
-    if (username && email && uuid && is_partner !== null)
-      setUser({
-        username,
-        email,
-        uuid,
-        is_partner,
-      });
-
-    setIsExternal(is_external);
-    if (is_external) setCreateChat(is_external);
-  }, []);
 
   const toggleOpen = useCallback(() => setIsOpen(!isOpen), [isOpen]);
 
@@ -132,6 +110,10 @@ const App: React.FC = () => {
       return `https://www.gravatar.com/avatar/${hash}?d=mp`;
     }
   }, [selectedChat]);
+
+  const setCreateChat = useCallback((value: boolean) => {
+    setKeyData("createChat", value);
+  }, []);
 
   const render = useMemo(() => {
     if (selectedChat) {
@@ -178,33 +160,11 @@ const App: React.FC = () => {
     notifications,
   ]);
 
-  const socket = useMemo(() => {
-    if (user) {
-      const socket = socketIOClient(
-        `${process.env.REACT_APP_DEADPOOL_URL}notification`,
-        {
-          query: {
-            uuid: user.uuid,
-          },
-          auth: {
-            token: "oi",
-          },
-        },
-      );
-
-      socket?.on("new message", data => {
-        setNotifications(nots => [...(nots as Array<any>), data]);
-      });
-
-      return socket;
-    }
-
-    return null;
-  }, [user]);
-
   const hasNot = useMemo(() => {
-    return notifications.find(not => not.status === 0);
-  }, [notifications]);
+    return notifications.find(
+      not => not.status === 0 && not.user_uuid === user?.uuid,
+    );
+  }, [notifications, user]);
 
   return (
     <div className={`app ${isOpen ? "open" : "close"}`}>
@@ -239,4 +199,8 @@ const App: React.FC = () => {
   );
 };
 
-export default App;
+export default (props: any) => (
+  <ChatProvider>
+    <App {...props} />
+  </ChatProvider>
+);

@@ -10,7 +10,11 @@ import {
 import socketIOClient from "socket.io-client";
 import { IUser } from "../../types/types";
 import "./styles.scss";
-import { createMessageService, getChatService } from "../../services/deadpool";
+import {
+  createMessageService,
+  getChatService,
+  readNotificationService,
+} from "../../services/deadpool";
 import Message from "./Message";
 
 interface IChatProps {
@@ -64,6 +68,21 @@ const Chat: React.FC<IChatProps> = ({
 
     return socket;
   }, [id, user]);
+
+  useEffect(() => {
+    const notification = notifications?.filter(
+      n =>
+        n &&
+        n.resource_id !== id &&
+        n.target_id !== id &&
+        n.user_uuid === user?.uuid,
+    );
+
+    if (notification && id) {
+      const not = notification[0];
+      readNotificationService(not?.id);
+    }
+  }, [notifications, id, user]);
 
   useEffect(() => {
     const _getChat = async () => {

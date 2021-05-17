@@ -59,10 +59,13 @@ const ChatList: React.FC<IChatListProps> = ({
   const hasNot = useCallback(
     chat => {
       return notifications?.find(
-        not => not.chat_id === chat && not.status === 0,
+        not =>
+          not.chat_id === chat &&
+          not.status === 0 &&
+          not.user_uuid === user?.uuid,
       );
     },
-    [notifications],
+    [notifications, user],
   );
 
   return (
