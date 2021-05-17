@@ -8,7 +8,6 @@ import {
   faTimes,
 } from "@fortawesome/free-solid-svg-icons";
 import socketIOClient from "socket.io-client";
-import { IUser } from "../../types/types";
 import "./styles.scss";
 import {
   createMessageService,
@@ -63,17 +62,18 @@ const Chat: React.FC = () => {
   }, [id, user]);
 
   useEffect(() => {
-    const notification = notifications?.filter(
-      n =>
-        n &&
-        n.resource_id !== id &&
-        n.target_id !== id &&
-        n.user_uuid === user?.uuid,
+    const [notification] = notifications?.filter(
+      n => n.chat_id === id && n.user_uuid === user?.uuid && n.status === 0,
     );
 
     if (notification && id) {
-      const not = notification[0];
-      readNotificationService(not?.id);
+      readNotificationService(notification?.id);
+
+      const newNots = notifications.map(not =>
+        not.id === notification.id ? { ...notification, status: 1 } : not,
+      );
+
+      setKeyData("notifications", newNots);
     }
   }, [notifications, id, user]);
 
