@@ -2,23 +2,12 @@ import { faCommentAlt } from "@fortawesome/free-solid-svg-icons";
 import { useCallback, useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { getChatsService } from "../../services/deadpool";
-import { IUser } from "../../types/types";
 import "./styles.scss";
+import { useChat } from "../../hooks/chat";
 
-interface IChatListProps {
-  user?: IUser;
-  setSelectedChat(e: any): void;
-  setCreateChat(e: any): void;
-  notifications?: any[];
-}
-
-const ChatList: React.FC<IChatListProps> = ({
-  user,
-  setSelectedChat,
-  setCreateChat,
-  notifications,
-}) => {
+const ChatList: React.FC = () => {
   const [chats, setChats] = useState<any>();
+  const { user, setKeyData, notifications } = useChat();
 
   const getChats = useCallback(async () => {
     const { data } = await getChatsService({
@@ -81,7 +70,7 @@ const ChatList: React.FC<IChatListProps> = ({
         <tbody>
           {chats?.map((chat: any) => (
             <>
-              <tr onClick={() => setSelectedChat(chat)}>
+              <tr onClick={() => setKeyData("chat", chat)}>
                 <td>
                   {hasNot(chat.id) && <span className="notification" />}
                   <FontAwesomeIcon icon={faCommentAlt} />
@@ -93,7 +82,7 @@ const ChatList: React.FC<IChatListProps> = ({
           ))}
         </tbody>
       </table>
-      <button type="button" onClick={() => setCreateChat(true)}>
+      <button type="button" onClick={() => setKeyData("createChat", true)}>
         NOVO CHAT
       </button>
     </div>

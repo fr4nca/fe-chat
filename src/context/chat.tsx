@@ -14,6 +14,8 @@ interface IChatState {
   company: any;
   isExternal: boolean;
   createChat: boolean;
+  chat: any;
+
   setKeyData(key: string, value: any): void;
 }
 
@@ -23,6 +25,8 @@ export interface IChatContextData {
   company: any;
   isExternal: boolean;
   createChat: boolean;
+  chat: any;
+
   setKeyData(key: string, value: any): void;
 }
 
@@ -85,7 +89,7 @@ export const ChatProvider: React.FC = ({ children }) => {
       }));
   }, []);
 
-  const socket = useMemo(() => {
+  useMemo(() => {
     if (data.user) {
       const socket = socketIOClient(
         `${process.env.REACT_APP_DEADPOOL_URL}notification`,
@@ -127,6 +131,7 @@ export const ChatProvider: React.FC = ({ children }) => {
         company: data.company,
         user: data.user,
         createChat: data.createChat,
+        chat: data.chat,
 
         setKeyData,
       }}

@@ -16,24 +16,17 @@ import {
   readNotificationService,
 } from "../../services/deadpool";
 import Message from "./Message";
+import { useChat } from "../../hooks/chat";
 
-interface IChatProps {
-  user?: IUser;
-  chat?: any;
-  isExternal?: boolean;
-  setSelectedChat(e: any): void;
-  setCreateChat(e: any): void;
-  notifications?: any[];
-}
+const Chat: React.FC = () => {
+  const {
+    user,
+    chat: { id },
+    isExternal,
+    setKeyData,
+    notifications,
+  } = useChat();
 
-const Chat: React.FC<IChatProps> = ({
-  user,
-  chat: { id },
-  isExternal,
-  setSelectedChat,
-  setCreateChat,
-  notifications,
-}) => {
   const textRef = useRef<HTMLTextAreaElement>(null);
   const fileInput = useRef<HTMLInputElement>(null);
 
@@ -59,8 +52,8 @@ const Chat: React.FC<IChatProps> = ({
 
     socket?.on("typing", data => {
       setTypingUsers(_users => {
-        if (_users.find(u => data.user === u.user)) {
-          return _users.map(u => (u.user === data.user ? data : u));
+        if (_users?.find(u => data.user === u.user)) {
+          return _users?.map(u => (u.user === data.user ? data : u));
         }
         return [..._users, data];
       });
@@ -171,14 +164,14 @@ const Chat: React.FC<IChatProps> = ({
             <FontAwesomeIcon
               icon={faTimes}
               onClick={() => {
-                setSelectedChat(null);
-                setCreateChat(true);
+                setKeyData("chat", null);
+                setKeyData("createChat", true);
               }}
             />
           ) : (
             <FontAwesomeIcon
               icon={faArrowLeft}
-              onClick={() => setSelectedChat(null)}
+              onClick={() => setKeyData("chat", null)}
             />
           )}
           {chat.summary}

@@ -1,20 +1,76 @@
-import { IUser } from "../../types/types";
+import { useCallback } from "react";
+import { v4 as uuidv4 } from "uuid";
+import { useChat } from "../../hooks/chat";
+import { createChatService } from "../../services/deadpool";
 import "./styles.scss";
 
-interface ICreateChatProps {
-  user?: IUser;
-  company?: string;
-  isExternal?: boolean;
-  onSubmitExternal(e: any): void;
-  onSubmitInternal(e: any): void;
-}
+const CreateChat: React.FC = () => {
+  const { user, isExternal, setKeyData, company } = useChat();
 
-const CreateChat: React.FC<ICreateChatProps> = ({
-  user,
-  isExternal,
-  onSubmitExternal,
-  onSubmitInternal,
-}) => {
+  const onSubmitExternal = useCallback(
+    async e => {
+      e.preventDefault();
+      const name = e.target.elements.name.value;
+      const email = e.target.elements.email.value;
+      const uuid = uuidv4();
+
+      const { data: dataRes } = await createChatService({
+        owner_uuid: uuid,
+        owner_name: name,
+        owner_email: email,
+        company_uuid: company,
+        summary: "Novo chat",
+        team: 0,
+      });
+
+      setKeyData("user", {
+        email,
+        username: name,
+        uuid,
+        is_partner: false,
+      });
+
+      setKeyData("chat", dataRes);
+      setKeyData("createChat", false);
+    },
+    [company],
+  );
+
+  const onSubmitInternal = useCallback(
+    async e => {
+      e.preventDefault();
+      const summary = e.target.elements.summary.value;
+
+      let payload: any = {
+        owner_uuid: user?.uuid,
+        owner_name: user?.username,
+        owner_email: user?.email,
+        is_partner: user?.is_partner,
+        company_uuid: company,
+        summary,
+      };
+
+      if (user?.is_partner) {
+        const team = e.target.elements.team.value;
+        const resource_type = e.target.elements.resource_type.value;
+        const resource_id = e.target.elements.resource_id.value;
+
+        payload = {
+          ...payload,
+          team,
+          resource_type,
+          resource_id,
+        };
+      }
+
+      const { data: dataRes } = await createChatService(payload);
+
+      setKeyData("chat", dataRes);
+      setKeyData("createChat", false);
+    },
+    [user, company],
+  );
+
   return user && !isExternal ? (
     <form className="form" onSubmit={onSubmitInternal}>
       <div>
