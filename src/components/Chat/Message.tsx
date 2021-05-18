@@ -38,7 +38,7 @@ const Message: React.FC<IMessageProps> = ({ message, user }) => {
   }, [message]);
 
   const isAuthor = useMemo(
-    () => message.author_uuid === user?.uuid,
+    () => message.author_email === user?.email,
     [message, user],
   );
 
