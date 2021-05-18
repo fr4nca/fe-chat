@@ -6,9 +6,9 @@ div.div {
   }
   
   .table {
-    width: 100%;
     margin-top: 20px;
     border-collapse: collapse;
+    width: 400px;
 
     span.notification {
       position: absolute;
@@ -20,6 +20,18 @@ div.div {
       left: 28px;
       border-radius: 50%;
     }
+
+    thead {
+      display: block;
+      width: 400px;
+    }
+    
+    tbody {
+      display: block;
+      overflow-y: auto;
+      height: 400px;
+      width: 400px;
+    }
     
     tbody tr {
       cursor: pointer;
@@ -30,22 +42,29 @@ div.div {
     }
 
     tr {
+      display: inline-block;
+      width: 100%;
+      
       th {
         text-align: left;
         font: normal normal 900 13px Lato;
         color: rgba(162, 169, 191, 1);
         text-transform: uppercase;
         padding: 12px;
+        width: 84%;
+
+        margin-right: 20px;
       }
 
       td {
+        width: 100%;
         position: relative;
         padding: 12px;
         text-align: left;
         font: normal normal normal 13px Lato;
         color: rgba(100, 114, 140, 1);
         border-top: 1px solid rgba(232, 234, 239, 1);
-        border-bottom: 1px solid rgba(232, 234, 239, 1);
+        // border-bottom: 1px solid rgba(232, 234, 239, 1);
 
         &.area {
           color: #2253F5;

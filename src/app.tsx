@@ -60,8 +60,8 @@ const App: React.FC = () => {
   }, [notifications, user]);
 
   return (
-    <div className={`app ${isOpen ? "open" : "close"}`}>
-      {isOpen ? (
+    <div className={`app ${true ? "open" : "close"}`}>
+      {true ? (
         <>
           <header className="header">
             <div>

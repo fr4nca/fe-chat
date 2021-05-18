@@ -52,14 +52,14 @@ const CreateChat: React.FC = () => {
 
       if (user?.is_partner) {
         const team = e.target.elements.team.value;
-        const resource_type = e.target.elements.resource_type.value;
-        const resource_id = e.target.elements.resource_id.value;
+        // const resource_type = e.target.elements.resource_type.value;
+        // const resource_id = e.target.elements.resource_id.value;
 
         payload = {
           ...payload,
           team,
-          resource_type,
-          resource_id,
+          // resource_type,
+          // resource_id,
         };
       }
 
@@ -83,7 +83,7 @@ const CreateChat: React.FC = () => {
           <option value={0}>A</option>
         </select>
       </div>
-      {user?.is_partner && (
+      {false && user?.is_partner && (
         <>
           <div>
             <label>Recurso</label>
