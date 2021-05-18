@@ -79,8 +79,23 @@ const CreateChat: React.FC = () => {
       </div>
       <div>
         <label>Área de atendimento</label>
-        <select placeholder="Escolha uma área" name="team" required>
-          <option value={0}>A</option>
+        <select
+          placeholder="Escolha uma área"
+          name="team"
+          required
+          defaultValue={0}
+        >
+          <option disabled value={0}>
+            Escolha uma área
+          </option>
+          <option value={1}>Suporte</option>
+          <option value={2}>Financeiro</option>
+          <option value={3}>Comercial</option>
+          <option value={4}>Migração</option>
+          <option value={5}>Spam</option>
+          <option value={6}>Insights</option>
+          <option value={7}>Whitelabel</option>
+          <option value={1}>Outros</option>
         </select>
       </div>
       {false && user?.is_partner && (
