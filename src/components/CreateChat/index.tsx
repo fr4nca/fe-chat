@@ -21,6 +21,7 @@ const CreateChat: React.FC = () => {
         company_uuid: company,
         summary: "Novo chat",
         team: 0,
+        is_partner: false,
       });
 
       setKeyData("user", {
