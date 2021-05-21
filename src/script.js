@@ -6,7 +6,7 @@
   const is_partner = l.currentScript.getAttribute("is_partner");
   const is_external = l.currentScript.getAttribute("is_external");
   const div = l.createElement("div");
-  div.id = "cloudez-chat";
+  div.id = "chat";
   const body = l.querySelector("body");
   const head = l.querySelector("head");
   body.insertBefore(div, body?.firstChild);
@@ -21,7 +21,7 @@
   const scripts = html.querySelectorAll(o);
   const links = html.querySelectorAll(u);
   scripts.forEach(script => {
-    if (script.id !== "chat-cloudez") {
+    if (script.id !== "chat") {
       const newScript = l.createElement(o);
       if (script.src) {
         newScript.src = `${d}${script.src.split(c.location.origin)[1]}`;
@@ -45,7 +45,6 @@
     newLink.rel = "stylesheet";
     head.appendChild(newLink);
   });
-  const script = l.querySelector("#chat-cloudez");
+  const script = l.querySelector("#chat");
   script.remove();
 })(window, document, "script", "link", "http://localhost:5000");
-// })(window, document, "script", "link", "https://chat.cloudez.io");
